@@ -32,3 +32,4 @@ app.get('/weather-data', (req, res) => {
 app.listen(PORT, () => {
     console.log(`srever started on ${PORT}`);
 });
+
