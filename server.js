@@ -1,35 +1,32 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const app = express();
-const weatherData = require('./data/weather.json');
-app.use(cors());
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const weatherData = require("./data/weather.json");
 
-const PORT = process.env.PORT;
+const server = express();
+server.use(cors());
+const PORT = process.env.PORT ;
 
-app.get("/", (req, res) => {
-    res.send('Hello Wolrd');
-})
-
-app.get('/weatherAll', (req, res) => {
-    res.send(weatherData);
+server.get("/", (req, res) => {
+  res.send("This is Home page");
 });
 
-app.get('/weather-data', (req, res) => {
-    let lat = req.query.lat;
-    let lon = req - query.lon;
-    let searchQuery = req.query.searchQuery;
+server.get("/weather", (req, res) => {
+  let lat = req.query.lat;
+  let lon = req.query.lon;
+  let searchQuery = req.query.searchQuery;
 
-    let result = "";
-
-    if (lat == weatherData.lat && lon == weatherData.lon && searchQuery == weatherData.city_name) {
-        result = weatherData.data;
-    } else {
-        result = "error";
-    }
-    res.send(result);
-});
-app.listen(PORT, () => {
-    console.log(`srever started on ${PORT}`);
+  if (lat == weatherData.lat && lon == weatherData.lon && searchQuery == weatherData.city_name) {
+    res.send(weatherData.data);
+  } else {
+    res.status(500).send("Error, city not found");
+  }
 });
 
+server.get("*", (req, res) => {
+  res.status(404).send("Sorry, this page not found");
+});
+
+server.listen(PORT, () => {
+  console.log(`Listing on port: ${PORT}`);
+});
