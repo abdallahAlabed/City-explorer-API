@@ -29,39 +29,40 @@ server.get("/weatherAll", (req, res) => {
   res.send(weatherData);
 });
 
-// server.get("/weather2", (req, res) => {
-//   const key = process.env.WEATHER_KEY;
-//   let searchQuery = req.query.searchQuery;
-//   let url = `https://api.weatherbit.io/v2.0/forecast/daily?city=${searchQuery}&key=${key}`;
-//   axios.get(url).then((response) => {
-//     let result = response.data.data.map((item) => {
-//       return new Data(item);
-//     });
-//     res.send(result);
-//   });
-// });
-
 server.get("/weather", (req, res) => {
+  const key = process.env.WEATHER_KEY;
   const lat = req.query.lat;
   const lon = req.query.lon;
-  console.log(weatherData);
-console.log(lat);
-console.log(lon);
-
-  if (lat && lon) {
-
-
-    try {
-      const reponseData = weatherData.data.map((obj) => new Data(obj));
-      res.json(reponseData);
-    }
-    catch (error) {
-      res.send(error.message);
-    };
-  } else {
-    res.send("please provide a proper lat and lon ");
-  }
+  let url = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lon}&key=${key}`;
+  axios.get(url).then((response) => {
+    let result = response.data.data.map((item) => {
+      return new Data(item);
+    });
+    res.send(result);
+  });
 });
+
+// server.get("/weather", (req, res) => {
+//   const lat = req.query.lat;
+//   const lon = req.query.lon;
+//   console.log(weatherData);
+// console.log(lat);
+// console.log(lon);
+
+//   if (lat && lon) {
+
+
+//     try {
+//       const reponseData = weatherData.data.map((obj) => new Data(obj));
+//       res.json(reponseData);
+//     }
+//     catch (error) {
+//       res.send(error.message);
+//     };
+//   } else {
+//     res.send("please provide a proper lat and lon ");
+//   }
+// });
 
 
 
